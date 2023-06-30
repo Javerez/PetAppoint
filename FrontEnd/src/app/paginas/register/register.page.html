@@ -8,7 +8,7 @@
 
 <ion-content>
   <div class="flex-center">
-    <form [formGroup]="formRegister" (ngSubmit)="mostrar()">
+    <form [formGroup]="formRegister" (ngSubmit)="register()">
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input formControlName="nombre"></ion-input>
@@ -23,7 +23,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input formControlName="clave" type="password"></ion-input>
+        <ion-input formControlName="password" type="password"></ion-input>
       </ion-item>
       <ion-button class="fixed-bottom" size="full" type="submit">Ingresar</ion-button>
     </form>

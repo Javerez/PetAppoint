@@ -8,6 +8,10 @@ const app = express();
 var jsonParser = bodyParser.json()
 app.use(cors());
 
+// SECRET KEY
+var key = "ASECRET";
+
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -30,3 +34,67 @@ const configuracion = {
 app.listen(configuracion, () => {
     console.log(`Conectando al servidor http://localhost:${configuracion.port}`)
 })
+
+
+//Registra 
+app.post("/registro",jsonParser, (req:any, res:any) =>{
+    let nombre = req.body.nombre;
+    let apellido = req.body.apellido;
+    let email = req.body.email;
+    let password = CryptoJS.AES.encrypt(req.body.password, key).toString();
+    //console.log("datos: " +req.body.password, password)
+    let idTipo = 0;
+    
+
+    let sql1 = `select * FROM usuario WHERE email ='${email}'`;
+    connection.query(sql1, (error: any, results: string, fields: any) =>{
+        if(error) throw error;
+        else{
+            if(results==""){
+                let sql2 = `insert into Usuario values ('${email}', '${nombre}','${password}', ${idTipo})`;
+                connection.query(sql2, function(error: any, results: any, fields: any){
+                    if(error) throw error;
+                    else {
+                        res.json({"id":1});
+                    }
+                })
+
+            }else res.json({"id":2});
+        }
+    })
+})
+//Inicia sesion de un usuario devolviendo un token de inicio de sesion
+app.post("/iniciosesion",jsonParser,(req:any, res:any) => {
+    let email=req.body.email;
+    let password=req.body.password
+    let contraEncriptada;
+    connection.query("select * from usuario where email=?",[email],function(error: any,results:any,fields: any){  
+        if (error) throw error;
+        if(results=="") res.json({"id":1});
+        else{
+            contraEncriptada=results[0].password
+            //console.log(password,contraEncriptada);
+            let decrypted = CryptoJS.AES.decrypt(contraEncriptada, key);
+            let contraDesencriptada = decrypted.toString(CryptoJS.enc.Utf8);
+            //console.log(password,contraDesencriptada);
+            if (contraDesencriptada!=password){
+                connection.query("select * from usuario where password=?",[password],function(error: any,results: string,fields: any){  
+                    if (error) throw error;
+                    if(results=="") res.json({"id":2});
+                });
+            }
+            else{
+                connection.query("select * from usuario where  email=? and password=?",[email,contraEncriptada],function(error: any,results: any,fields: any){  
+                    if (error) throw error;
+                    if(results!="") {
+                        
+                        const token = jwt.sign({id: results[0].idTipo}, 'secretkey');
+                        return res.status(200).json({"id":3,"token":token, "resultados":results});
+                    }
+                });
+            }
+            
+        }
+    });
+    
+});
