@@ -96,3 +96,35 @@ app.post("/iniciosesion", jsonParser, (req, res) => {
         }
     });
 });
+app.get("/consultas", jsonParser,(req, res) =>{
+    let sql = 'select * from consulta';
+    connection.query(sql, (error, results, fields) =>{
+        if(error) throw error;
+        else{
+            res.json(results);
+        }
+    })
+})
+app.delete('/eliminarconsulta',jsonParser ,(req, res) =>{
+    const idConsulta = req.body.idConsulta;
+    let sql = `delete from consulta where idConsulta='${idConsulta}'`;
+    connection.query(sql, (error, results, fields) =>{
+        if(error) throw error;
+        else{
+            res.json({id:1})
+        }
+    })
+});
+
+function verifyToken(req,res, next){
+    if(!req.headers.authorization){
+        return res.status(401).send('Unathorized Request');
+    }
+    const token = req.headers.authorization.split(' ')[1]
+    if (token == 'null'){
+        return res.status(401).send('Unathorized Request');
+    }
+    const data = jwt.verify(token,'secretkey');
+    req.idTipo=data.id;
+    next();
+}

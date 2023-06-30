@@ -1,16 +1,70 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button href="/home">Atras</ion-button>
     </ion-buttons>
-    <ion-title>consultas</ion-title>
+    <ion-title>Consulta</ion-title>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">consultas</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list lines="inset" class="group" *ngFor="let item of datos">
+    <ion-item >
+      <ion-list>
+        <ion-text slot="start">Consulta {{item.idConsulta}}</ion-text>
+        <p>{{item.nombreAnimal}}</p>
+        <p>{{item.fecha}}</p>
+      </ion-list>
+      <ion-button color="primary" slot="end" (click)="eliminarConsulta(item.idConsulta)">
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id="inputmodal">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-modal #modal trigger="inputmodal" [presentingElement]="presentingElement">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar color="light">
+          <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">Cancelar</ion-button>
+          </ion-buttons>
+
+          <ion-title class="ion-text-center">Nuevo Evento</ion-title>
+
+          <ion-buttons slot="end">
+            <ion-button color="primary" strong (click)="agregarConsulta()"
+              [disabled]="!nuevaConsulta.title">Agregar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="group">
+          <ion-input type="text" [(ngModel)]="nuevaConsulta.title" placeholder="Titulo" />
+        </div>
+        <div class="group">
+          <ion-input type="text" [(ngModel)]="nuevaConsulta.nombre" placeholder="Nombre Animal" />
+          <ion-item >
+            <ion-text slot="start">Fecha</ion-text>
+            <ion-datetime-button slot="end" datetime="datetime"></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime" [value]="nuevaConsulta.fecha"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+          
+        </div>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
