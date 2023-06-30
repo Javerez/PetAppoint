@@ -17,17 +17,14 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./paginas/register/register.module').then( m => m.RegisterPageModule)
-  },  {
+  },
+  {
     path: 'home',
     loadChildren: () => import('./paginas/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'consultas',
     loadChildren: () => import('./paginas/consultas/consultas.module').then( m => m.ConsultasPageModule)
-  },
-  {
-    path: 'pacientes',
-    loadChildren: () => import('./paginas/pacientes/pacientes.module').then( m => m.PacientesPageModule)
   }
 
 
