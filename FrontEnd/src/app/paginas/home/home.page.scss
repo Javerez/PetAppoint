@@ -9,13 +9,13 @@ ion-card-title{
     text-align: center;
 }
 ion-card{
-    height: auto;
-    width: auto;
+    height: 60%;
+    width: 70%;
 }
 ion-content{
     --background: var(--ion-color-secondary-shade)
 }
 ion-button{
+    margin-bottom: 18%;
     --background: var(--ion-color-secondary-shade)
 }
-

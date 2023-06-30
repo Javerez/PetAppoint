@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +10,7 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class LoginPage implements OnInit {
   formLogin!: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder, 
-  ) { }
+  constructor(private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     let formulario = {
@@ -28,5 +27,6 @@ export class LoginPage implements OnInit {
   }
   login(){
     console.log(this.formLogin.value);
+    this.router.navigate(['/home'])
   }
 }
