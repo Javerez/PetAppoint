@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
               case 3:
                 localStorage.setItem('token',data.token);
                 localStorage.setItem('userData',JSON.stringify(data.resultados[0]));
-                this.router.navigate(['menu']);
+                this.router.navigate(['home']);
                 break;
           }
           

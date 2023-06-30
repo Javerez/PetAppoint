@@ -37,7 +37,7 @@ app.post("/registro", jsonParser, (req, res) => {
     let apellido = req.body.apellido;
     let email = req.body.email;
     let password = CryptoJS.AES.encrypt(req.body.password, key).toString();
-    //console.log("datos: " +req.body.password, password)
+    //console.log("datos: " +req.body.password, password);
     let idTipo = 0;
     let sql1 = `select * FROM usuario WHERE email ='${email}'`;
     connection.query(sql1, (error, results, fields) => {

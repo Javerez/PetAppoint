@@ -16,15 +16,28 @@ export class RegisterPage implements OnInit {
     private router:Router,
     private usuarioService:UsuarioService
     ) { 
-    this.formRegister = this.formBuilder.group({
-      'nombre': new FormControl("", Validators.required),
-      'apellido': new FormControl("", Validators.required),
-      'email': new FormControl("", Validators.required),
-      'password': new FormControl("", Validators.required)
-    });
   }
 
   ngOnInit() {
+    this.formRegister = this.formBuilder.group({
+      nombre: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern(/^[a-zA-ZáéñóúüÁÉÑÓÚÜ -]*$/)
+      ])),
+      apellido: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern(/^[a-zA-ZáéñóúüÁÉÑÓÚÜ -]*$/)
+      ])),
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.email,
+        //Validators.pattern( /^(([^<>()[]\.,;:\s@"]+(.[^<>()[]\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/)
+      ])),
+      password: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern(/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,}$/)
+      ])),
+    });
   }
   mostrar(){
     console.log(this.formRegister.value)
@@ -34,7 +47,7 @@ export class RegisterPage implements OnInit {
       this.usuarioService.registroUsuario(this.formRegister.value).subscribe(data => {
         this.error_id=data.id;
         console.log("id: "+data.id);
-        if (this.error_id==1) this.router.navigate(['login']);
+        if (this.error_id==1) this.router.navigate(['home']);
         
       });
   }

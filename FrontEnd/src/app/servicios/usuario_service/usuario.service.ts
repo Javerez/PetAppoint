@@ -33,7 +33,7 @@ export class UsuarioService {
   cerrarSesion(){
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
-    this.router.navigate(['sesion']);
+    this.router.navigate(['login']);
   }
   obtenerRol(){
     let data = '[' +localStorage.getItem('userData')+']';
