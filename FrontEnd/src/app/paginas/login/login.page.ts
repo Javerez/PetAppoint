@@ -28,6 +28,7 @@ export class LoginPage implements OnInit {
     this.formLogin = this.formBuilder.group(formulario);
   }
   login(){
+    console.log(this.formLogin.value)
     if (this.formLogin.status === 'VALID') {
       this.usuarioService.inicioSesionUsuario(this.formLogin.value).subscribe(data => {
           console.log(data.id)

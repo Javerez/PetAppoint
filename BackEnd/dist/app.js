@@ -37,14 +37,17 @@ app.post("/registro", jsonParser, (req, res) => {
     let apellido = req.body.apellido;
     let email = req.body.email;
     let password = CryptoJS.AES.encrypt(req.body.password, key).toString();
-    //console.log("datos: " +req.body.password, password);
+    console.log("datos: " +req.body.password, password);
     let idTipo = 0;
     let sql1 = `select * FROM usuario WHERE email ='${email}'`;
     connection.query(sql1, (error, results, fields) => {
+        console.log("1");
         if (error)
             throw error;
         else {
             if (results == "") {
+                console.log(password);
+
                 let sql2 = `insert into Usuario values ( '${nombre}','${apellido}','${email}','${password}', ${idTipo})`;
                 connection.query(sql2, function (error, results, fields) {
                     if (error)
@@ -58,6 +61,8 @@ app.post("/registro", jsonParser, (req, res) => {
                 res.json({ "id": 2 });
         }
     });
+    console.log("3");
+
 });
 //Inicia sesion de un usuario devolviendo un token de inicio de sesion
 app.post("/iniciosesion", jsonParser, (req, res) => {
